@@ -1,32 +1,58 @@
-/* Scrollable Catalog Container */
-.catalog-scroll-container {
-  max-height: 72vh;
-  overflow-y: auto;
+/* our colors (DESIGN SYSTEM)---------------------- */
+:root {
+    --red: #A52A2A;
+    --brown: #8B4513;
+    --paper: #F6EEE2;
+    --soft: #EEE1CD;
+    --ink: #3B2414;
+    --muted: #7A5A43;
+
+    /* bootstrap uses our font + colors */
+    --bs-body-font-family: "EB Garamond", Georgia, serif;
+    --bs-body-bg: var(--paper);
+    --bs-body-color: var(--ink);
+    --bs-secondary-color: var(--muted);
+    /* rgb copies for bg-body utils */
+    --bs-body-bg-rgb: 246, 238, 226;
+    --bs-secondary-bg-rgb: 238, 225, 205;
+    --bs-tertiary-bg-rgb: 252, 248, 241;
 }
 
-/* Card Interactivity */
+/* -------------BTNS----------------- */
+/* red + soft buttons */
+.btn-brand {
+    background-color: var(--red);
+    color: #fff;
+}
+
+.btn-soft {
+    background-color: var(--soft);
+    color: var(--brown);
+}
+
+.btn-brand:hover,
+.btn-soft:hover {
+    background-color: var(--brown);
+    color: #fff;
+}
+
+/* search box handler*/
+.search-input {
+    background-color: var(--soft);
+    border: none;
+}
+
+/* card hover lift (catalog item) */
 .char-card {
-  cursor: pointer;
-  transition: transform 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    cursor: pointer;
+    transition: transform 0.15s;
 }
 
 .char-card:hover {
-  transform: translateY(-4px);
-  border-color: #dc3545 !important;
+    transform: translateY(-3px);
 }
 
+/* had to fix layout for the img card in modal */
 .char-card-img {
-  height: 110px;
-  object-fit: contain;
-}
-
-/* Detail Modal Styles */
-.characters-detail-img {
-  max-height: 200px;
-  object-fit: contain;
-}
-
-.moves-scroll-box {
-  max-height: 130px;
-  overflow-y: auto;
+    aspect-ratio: 3 / 4;
 }
