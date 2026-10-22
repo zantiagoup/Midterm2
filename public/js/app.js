@@ -1,15 +1,12 @@
 // Offline SVG Fallback for missing/broken sprites
 const DEFAULT_IMAGE = "data:image/svg+xml;utf8," + encodeURIComponent(`
   <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-    <rect width="100%" height="100%" fill="#2b3035"/>
-    <circle cx="100" cy="100" r="60" fill="none" stroke="#6c757d" stroke-width="8"/>
-    <line x1="40" y1="100" x2="160" y2="100" stroke="#6c757d" stroke-width="8"/>
-    <circle cx="100" cy="100" r="18" fill="#2b3035" stroke="#6c757d" stroke-width="8"/>
-    <text x="50%" y="185" font-family="sans-serif" font-size="14" fill="#adb5bd" text-anchor="middle">No Image</text>
+    <rect width="100%" height="100%" fill="#EEE1CD"/>
+    <text x="50%" y="52%" font-family="Georgia, serif" font-size="16" fill="#7A5A43" text-anchor="middle">No image</text>
   </svg>
 `);
 
-// DOM Elements
+// DOM Elements --------------------------
 const catalogGrid = document.getElementById('catalog-grid');
 const catalogSection = document.getElementById('catalog-section');
 const catalogCount = document.getElementById('catalog-count');
@@ -30,16 +27,20 @@ const characterModal = new bootstrap.Modal(modalElement);
 const modalName = document.getElementById('modal-name');
 const modalId = document.getElementById('modal-id');
 const modalImg = document.getElementById('modal-img');
-const modalTypes = document.getElementById('modal-types');
-const modalExp = document.getElementById('modal-exp');
-const modalHeight = document.getElementById('modal-height');
-const modalWeight = document.getElementById('modal-weight');
-const modalAbilities = document.getElementById('modal-abilities');
-const modalMoves = document.getElementById('modal-moves');
+const modalFirst = document.getElementById('modal-first');
+const modalLast = document.getElementById('modal-last');
+const modalBorn = document.getElementById('modal-born');
+const modalDied = document.getElementById('modal-died');
+const modalFamily = document.getElementById('modal-family');
+const modalCrest = document.getElementById('modal-crest');
+const modalTitles = document.getElementById('modal-titles');
+const modalAliases = document.getElementById('modal-aliases');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
+// --------- DOM END
 
-// Navigation state
+
+// Navigation state (to implement)
 let currentPrevId = null;
 let currentNextId = null;
 let isModalOpen = false;
@@ -95,24 +96,24 @@ function renderCatalog(characterList, searchQuery) {
     col.className = 'col';
 
     const card = document.createElement('div');
-    card.className = 'card h-100 char-card bg-body-tertiary border-secondary-subtle text-center p-2';
+    card.className = 'char-card h-100 p-2 rounded-3 bg-body-tertiary text-center';
     card.addEventListener('click', () => openDetail(character.id || character.name));
 
     const img = document.createElement('img');
-    img.className = 'card-img-top char-card-img mx-auto my-2';
+    img.className = 'char-card-img w-100 object-fit-cover rounded mb-2';
     img.alt = character.name;
     img.src = character.image || DEFAULT_IMAGE;
     img.onerror = () => { img.onerror = null; img.src = DEFAULT_IMAGE; };
 
     const body = document.createElement('div');
-    body.className = 'card-body p-1';
+    body.className = 'px-1';
 
     const idBadge = document.createElement('span');
-    idBadge.className = 'badge bg-secondary-subtle text-secondary-emphasis mb-1';
+    idBadge.className = 'small text-body-secondary';
     idBadge.textContent = character.id ? `#${String(character.id).padStart(3, '0')}` : '';
 
     const title = document.createElement('h6');
-    title.className = 'card-title text-capitalize mb-1 fw-bold text-truncate';
+    title.className = 'fw-semibold mb-0';
     title.textContent = character.name;
 
     body.append(idBadge, title);
@@ -164,41 +165,16 @@ function populateModal(character) {
   modalImg.src = character.image || DEFAULT_IMAGE;
   modalImg.onerror = () => { modalImg.onerror = null; modalImg.src = DEFAULT_IMAGE; };
 
-  modalExp.textContent = character.experience ?? '-';
-  modalHeight.textContent = character.height ?? '-';
-  modalWeight.textContent = character.weight ?? '-';
+  modalFirst.textContent = character.firstName || '-';
+  modalLast.textContent = character.lastName || '-';
+  modalBorn.textContent = character.born || '-';
+  modalDied.textContent = character.died || '-';
+  modalFamily.textContent = character.family || '-';
 
-  // Render Types
-  modalTypes.innerHTML = '';
-  (character.types || []).forEach((type) => {
-    const badge = document.createElement('span');
-    badge.className = 'badge bg-info text-uppercase px-3 py-2';
-    badge.textContent = type;
-    modalTypes.appendChild(badge);
-  });
+  modalCrest.src = character.crest || DEFAULT_IMAGE;
 
-  // Render Abilities
-  modalAbilities.innerHTML = '';
-  (character.abilities || []).forEach((ability) => {
-    const badge = document.createElement('span');
-    badge.className = 'badge bg-secondary text-capitalize';
-    badge.textContent = ability;
-    modalAbilities.appendChild(badge);
-  });
-
-  // Render Moves
-  modalMoves.innerHTML = '';
-  const moves = character.moves || [];
-  if (moves.length === 0) {
-    modalMoves.innerHTML = '<span class="text-secondary small">No moves listed</span>';
-  } else {
-    moves.forEach((move) => {
-      const badge = document.createElement('span');
-      badge.className = 'badge border border-secondary text-body-secondary text-capitalize';
-      badge.textContent = move;
-      modalMoves.appendChild(badge);
-    });
-  }
+  modalTitles.textContent = (character.titles || []).join(', ') || '-';
+  modalAliases.textContent = (character.aliases || []).join(', ') || '-';
 
   // Bind Circular Navigation IDs provided by Backend
   currentPrevId = character.prevId ?? null;
