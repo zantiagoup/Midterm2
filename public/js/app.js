@@ -57,7 +57,7 @@ async function loadCatalog(searchQuery = '') {
 
   try {
     // Define your search enpoint here.
-    const endpoint = '/api';
+    const endpoint = searchQuery ? `/api?search=${encodeURIComponent(searchQuery)}`:'/api';
 
     const response = await fetch(endpoint);
     if (response.status === 404) {
@@ -97,7 +97,7 @@ function renderCatalog(characterList, searchQuery) {
 
     const card = document.createElement('div');
     card.className = 'char-card h-100 p-2 rounded-3 bg-body-tertiary text-center';
-    card.addEventListener('click', () => openDetail(character.id || character.name));
+    card.addEventListener('click', () => openDetail((character.id !==undefined) ? character.id : character.name));
 
     const img = document.createElement('img');
     img.className = 'char-card-img w-100 object-fit-cover rounded mb-2';
@@ -110,7 +110,7 @@ function renderCatalog(characterList, searchQuery) {
 
     const idBadge = document.createElement('span');
     idBadge.className = 'small text-body-secondary';
-    idBadge.textContent = character.id ? `#${String(character.id).padStart(3, '0')}` : '';
+    idBadge.textContent = (character.id!== undefined) ? `#${String(character.id).padStart(3, '0')}` : '';
 
     const title = document.createElement('h6');
     title.className = 'fw-semibold mb-0';
@@ -131,7 +131,7 @@ async function openDetail(identifier) {
 
   try {
     // Set the enpoint for retrieving the information.
-    const response = await fetch(`/api`);
+    const response = await fetch(`/api/characters/${identifier}`);
 
     if (response.status === 404) {
       if (isModalOpen) characterModal.hide();
@@ -160,7 +160,7 @@ async function openDetail(identifier) {
  */
 function populateModal(character) {
   modalName.textContent = character.name || 'Unknown';
-  modalId.textContent = character.id ? `#${String(character.id).padStart(3, '0')}` : '#???';
+  modalId.textContent = (character.id !== undefined) ? `#${String(character.id).padStart(3, '0')}` : '#???';
 
   modalImg.src = character.image || DEFAULT_IMAGE;
   modalImg.onerror = () => { modalImg.onerror = null; modalImg.src = DEFAULT_IMAGE; };
