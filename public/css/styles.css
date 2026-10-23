@@ -2,7 +2,8 @@
 :root {
     --red: #A52A2A;
     --brown: #8B4513;
-    --paper: #F6EEE2;
+    --paper: #E6DAC6;
+    /* contrast fix*/
     --soft: #EEE1CD;
     --ink: #3B2414;
     --muted: #7A5A43;
@@ -13,7 +14,7 @@
     --bs-body-color: var(--ink);
     --bs-secondary-color: var(--muted);
     /* rgb copies for bg-body utils */
-    --bs-body-bg-rgb: 246, 238, 226;
+    --bs-body-bg-rgb: 230, 218, 198;
     --bs-secondary-bg-rgb: 238, 225, 205;
     --bs-tertiary-bg-rgb: 252, 248, 241;
 }
@@ -37,8 +38,9 @@
 }
 
 /* search box handler*/
-.search-input {
-    background-color: var(--soft);
+.search-input,
+.search-input:focus {
+    background-color: #FCF8F1; /* white like card. focus too */
     border: none;
 }
 

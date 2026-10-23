@@ -17,7 +17,9 @@ router.get('/',async(req, res, next) =>{
         }
 
         if(searchQuery && filteredChars.length === 0){
-            throw new Error(`No character matched "${req.query.search}".`);
+            const error = new Error(`No character matched "${req.query.search}".`);
+            error.status = 404; // no find. 404
+            throw error;
         }
 
         const mappedCatalog = filteredChars.map(c => ({
@@ -35,8 +37,11 @@ router.get('/',async(req, res, next) =>{
 router.get('/characters/:id', async (req, res, next) => {
     try{
         const id = parseInt(req.params.id, 10);
-        if(isNaN(id))
-            throw new Error('Invalid ID');
+        if(isNaN(id)){
+            const error = new Error('Invalid ID');
+            error.status = 400; // bad id. 400
+            throw error;
+        }
 
         const character = await getCharacterDetails(id);
         
