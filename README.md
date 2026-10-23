@@ -4,6 +4,8 @@ Midterm II · Web Application Development (Fall 2026) · Team 4: Alejandra + Zan
 
 Game of Thrones character catalog. A Node + Express server queries two public APIs and serves the frontend (Bootstrap).
 
+**Live:** https://thronefind.onrender.com (for extra pts)
+
 ## How to run
 
 Requires Node 18 or newer (uses native `fetch`).
